@@ -1,10 +1,10 @@
-// const express = require('express');
-
+const axios = require('axios');
 import { connectDb, insertSong } from './db/db'; // Assuming you've created the `db.js` file
 
 import express, { Request, Response } from 'express';
 import { find_lyrics } from './utils/find_lyrics';
 
+import { accessToken, getAccessToken } from '../keys';
 
 const app = express();
 const port = 3000;
@@ -31,7 +31,31 @@ app.post('/song', async () => {
     lyrics: 'some lyrics'
   };
 
-  const response = await insertSong(song);
+  await insertSong(song);
+});
+
+app.get('/artists', async () => {
+
+  const genre = 'Rap'; // Replace with the desired genre
+
+  axios.get(`https://api.spotify.com/v1/search?type=artist&q=genre:${genre}`, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  })
+    .then((response: any) => {
+      const artists = response.data.artists.items;
+      console.log(artists);
+    })
+    .catch((error: any) => {
+      console.error('Error:', error);
+    });
+
+});
+
+
+app.get('/token', async (req: Request, res: Response) => {
+  getAccessToken();
 });
 
 // Connect to the MongoDB database and start the server

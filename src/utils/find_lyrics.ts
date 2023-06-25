@@ -1,11 +1,5 @@
 import * as cheerio from "cheerio";
-
-// import fetch from 'node-fetch';
-// const fetch = require('node-fetch');
-// const node_fetch_1 = __importDefault(import("node-fetch"));
-// import { default as fetch, Request, Response } from 'node-fetch-ponyfill';
 import fetch, { Request, Response } from 'cross-fetch';
-// import * as cheerio from 'cheerio'; (Assuming you have cheerio installed)
 
 export async function find_lyrics(query_string: string): Promise<string | Error> {
     if (!query_string)

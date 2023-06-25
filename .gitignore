@@ -121,3 +121,6 @@ dist
 
 # Build directory
 dist/
+
+# Keys & Tokens
+keys.ts
