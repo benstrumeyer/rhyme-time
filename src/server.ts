@@ -1,13 +1,12 @@
-const axios = require('axios');
 import { connectDb, getOrmInstance, initializeORM } from './db/db';
-import express, { Request, Response } from 'express';
-import { find_lyrics } from './utils/find_lyrics';
 import { accessToken, getAccessToken } from '../keys';
-
-import { RequestContext } from '@mikro-orm/core';
-import { Song } from './entities/Song';
+import { find_lyrics } from './utils/find_lyrics';
 import { isString } from './utils/typeChecker';
 
+import express, { Request, Response } from 'express';
+import { RequestContext } from '@mikro-orm/core';
+import { Song } from './entities/Song';
+import axios from 'axios';
 
 const app = express();
 const port = 3000;
