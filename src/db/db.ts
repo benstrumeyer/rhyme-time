@@ -1,36 +1,39 @@
 import { MongoClient } from 'mongodb';
-import { Song } from '../../types/index';
+import { SongData } from '../../types/index';
+import { Song } from '../entities/Song';
+
+import { MikroORM, EntityManager } from '@mikro-orm/core';
+import { MongoDriver } from '@mikro-orm/mongodb';
 
 const mongoURL = 'mongodb://localhost:27017'; // Replace with your MongoDB connection string
 const dbName = 'rhyme-time'; // Replace with your database name
 const uri = 'mongodb://localhost:27017'; // Replace with your MongoDB connection string
 let db: any;
+let orm: MikroORM;
 
-// Connect to the MongoDB database
-export async function connectDb() {
+export async function initializeORM(): Promise<MikroORM> {
+  const dbName = 'rhyme-time';
+  orm = await MikroORM.init<MongoDriver>({
+    dbName,
+    clientUrl: 'mongodb://localhost:27017',
+    entities: [Song],
+    debug: true,
+    driver: MongoDriver,
+  });
+
+  return orm;
+}
+
+export function getOrmInstance(): MikroORM {
+  return orm;
+}
+
+export async function connectDb(): Promise<void> {
   try {
-    const client = new MongoClient(mongoURL);
-    await client.connect();
-    db = client.db(dbName);
+    const orm = await initializeORM();
+    await orm.connect();
     console.log('Connected to the database');
   } catch (error) {
     throw new Error('Failed to connect to the database');
-  }
-}
-
-export async function insertSong(song: Song): Promise<void> {
-  const client = new MongoClient(uri);
-
-  try {
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection('song');
-
-    await collection.insertOne(song);
-    console.log('Song inserted successfully');
-  } catch (error) {
-    console.error('Error inserting song:', error);
-  } finally {
-    client.close();
   }
 }
