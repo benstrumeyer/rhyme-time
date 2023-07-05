@@ -71,6 +71,27 @@ const port = 3000;
 
   });
 
+  app.get('/artistID', async () => {
+    const name = 'Eminem';
+    axios.get(`https://api.spotify.com/v1/search?type=artist&q=${name}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+      .then((response: any) => {
+        console.log('Response: ', response);
+        const artists = response.data.artists;
+        console.log('Artists: ', artists);
+        const items = artists.items;
+        console.log('items: ', items);
+        const artistID = items[0].id;
+        console.log('eminem artist id: ', artistID);
+      })
+      .catch((error: any) => {
+        console.error('Error:', error);
+      });
+  });
+
   app.get('/token', async (req: Request, res: Response) => {
     getAccessToken();
   });
