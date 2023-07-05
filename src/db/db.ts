@@ -5,9 +5,9 @@ import { Song } from '../entities/Song';
 import { MikroORM, EntityManager } from '@mikro-orm/core';
 import { MongoDriver } from '@mikro-orm/mongodb';
 
-const mongoURL = 'mongodb://localhost:27017'; // Replace with your MongoDB connection string
-const dbName = 'rhyme-time'; // Replace with your database name
-const uri = 'mongodb://localhost:27017'; // Replace with your MongoDB connection string
+const mongoURL = 'mongodb://localhost:27017'; 
+const dbName = 'rhyme-time'; 
+const uri = 'mongodb://localhost:27017'; 
 let db: any;
 let orm: MikroORM;
 

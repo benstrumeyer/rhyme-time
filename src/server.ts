@@ -6,6 +6,7 @@ import { accessToken, getAccessToken } from '../keys';
 
 import { RequestContext } from '@mikro-orm/core';
 import { Song } from './entities/Song';
+import { isString } from './utils/typeChecker';
 
 
 const app = express();
@@ -21,7 +22,7 @@ const port = 3000;
     RequestContext.create(orm.em, next);
   });
 
-  // Route to retrieve lyrics for a specific artist
+  // Retrieve lyrics for a specific artist
   app.get('/lyrics', async (req: Request, res: Response) => {
     try {
       const response = await find_lyrics("Wap");
@@ -33,19 +34,23 @@ const port = 3000;
   });
 
   app.post('/song', async () => {
-
     const name = 'WAP';
     const artist = 'Cardi B';
-    const lyrics = 'Example...';
-    const song = {
-      name, artist, lyrics
-    };
-    console.log('inserting Song');
-
-    const em = RequestContext.getEntityManager();
-    if (em) {
-      let songEntity = em.create(Song, song);
-      await em.persistAndFlush(songEntity);
+    let lyrics: string | Error;
+    try {
+      lyrics = await find_lyrics(name);
+      const song = {
+        name,
+        artist,
+        lyrics: isString(lyrics) ? lyrics : '',
+      };
+      const em = RequestContext.getEntityManager();
+      if (em && song) {
+        let songEntity = em.create(Song, song);
+        await em.persistAndFlush(songEntity);
+      }
+    } catch (e) {
+      console.error('Failed to retrieve lyrics: ', e);
     }
   });
 
