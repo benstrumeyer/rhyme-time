@@ -2,6 +2,7 @@ import { connectDb, getOrmInstance, initializeORM } from './db/db';
 import { accessToken, getAccessToken } from '../keys';
 import { find_lyrics } from './utils/find_lyrics';
 import { isString } from './utils/typeChecker';
+import { cleanAllLyrics, updateSongsWithCleanedLyrics } from './utils/parseLyrics';
 
 import express, { Request, Response } from 'express';
 import { RequestContext } from '@mikro-orm/core';
@@ -14,6 +15,7 @@ const port = 3000;
 
 (async () => {
   await initializeORM();
+  await cleanAllLyrics();
 
   app.use(express.json());
 
@@ -70,6 +72,10 @@ const port = 3000;
         console.error('Error:', error);
       });
 
+  });
+
+  app.get('/eminemSongs', async () => {
+    updateSongsWithCleanedLyrics();
   });
 
   app.get('/artistID', async () => {
