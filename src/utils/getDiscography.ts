@@ -39,7 +39,7 @@ const matchSongs = async (id: string, token: string): Promise<string[] | ErrorRe
   }
 };
 
-const getDiscography = async (id: string, limit = 50): Promise<any> => {
+export const getDiscography = async (id: string, limit = 50): Promise<any> => {
   try {
     const response: AxiosResponse = await axios({
       url: `https://api.spotify.com/v1/artists/${id}/albums?limit=${limit}`,
@@ -72,5 +72,3 @@ const getDiscography = async (id: string, limit = 50): Promise<any> => {
     return { [status]: statusText } as ErrorResponse;
   }
 };
-
-export default getDiscography;

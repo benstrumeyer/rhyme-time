@@ -5,7 +5,7 @@ export const cleanText = (text: string): string => {
   return text.replace(/\[.*?\]|\n\s*\n/g, '');
 };
 
-export async function updateSongsWithCleanedLyrics() {
+export async function cleanAllLyrics() {
   const em = RequestContext.getEntityManager();
   try {
     if (em) {
@@ -15,7 +15,6 @@ export async function updateSongsWithCleanedLyrics() {
         song.lyrics = cleanedLyrics;
         await em.persistAndFlush(song);
       }
-
       console.log('Lyrics cleaned and updated successfully.');
     }
   } catch (error) {
