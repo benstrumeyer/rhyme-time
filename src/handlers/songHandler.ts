@@ -8,7 +8,6 @@ import { Request, Response } from 'express';
 import { RequestContext } from '@mikro-orm/core';
 import axios from 'axios';
 
-
 export const getLyrics = async (req: Request, res: Response) => {
   try {
     const response = await find_lyrics("Wap");
@@ -23,6 +22,7 @@ export const getLyricsForSong = async (req: Request, res: Response) => {
   const name = 'WAP';
   const artist = 'Cardi B';
   let lyrics: string | Error;
+
   try {
     lyrics = await find_lyrics(name);
     const song = {

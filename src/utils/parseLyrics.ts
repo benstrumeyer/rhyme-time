@@ -1,8 +1,9 @@
 import { RequestContext } from "@mikro-orm/core";
 import { Song } from "../entities/Song";
 
+// Removes text surrounded by [] and () and newlines
 export const cleanText = (text: string): string => {
-  return text.replace(/\[.*?\]|\n\s*\n/g, '');
+  return text.replace(/\[.*?\]|\(.*?\)|\n\s*\n/g, '');
 };
 
 export async function cleanAllLyrics() {
